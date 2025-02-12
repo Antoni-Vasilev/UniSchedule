@@ -1,14 +1,9 @@
 package eu.nexabg.unischedule.model;
 
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-
 public class SSubject extends Schedule {
 
-    public Elements cols;
+    public String time, location, subject, teacher;
 
-    public SSubject(Element line, Elements cols) {
-        super(line);
-        this.cols = cols;
+    public SSubject(String time, String location, String subject, String teacher) {
     }
 }

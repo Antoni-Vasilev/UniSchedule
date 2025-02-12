@@ -2,14 +2,15 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/layout_bg"
     android:paddingLeft="20dp"
-    android:paddingTop="20dp"
-    android:paddingRight="20dp">
+    android:paddingRight="20dp"
+    android:paddingBottom="20dp">
 
     <LinearLayout
+        android:id="@+id/background"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/list_schedule_ssubject_bg"
         android:orientation="vertical"
         android:padding="20dp">
 
@@ -23,7 +24,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto_medium"
                 android:text="8:00 - 9:35"
-                android:textColor="#112A46"
+                android:textColor="@color/black"
                 android:textSize="16sp" />
 
             <Space
@@ -37,7 +38,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto_medium"
                 android:text="зала 2430"
-                android:textColor="#112A46"
+                android:textColor="@color/black"
                 android:textSize="16sp" />
 
         </LinearLayout>
@@ -52,7 +53,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/roboto_regular"
             android:text="UNIX и Linux операционни системи - лекция в поток"
-            android:textColor="#112A46"
+            android:textColor="@color/black"
             android:textSize="16sp" />
 
         <Space
@@ -65,7 +66,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/roboto_regular"
             android:text="гл.асистент д-р Стоян Тодоров Мечев"
-            android:textColor="#112A46"
+            android:textColor="@color/black"
             android:textSize="16sp" />
 
     </LinearLayout>

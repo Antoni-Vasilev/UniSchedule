@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center"
+    android:background="@color/layout_bg"
     android:padding="20dp">
 
     <com.google.android.material.divider.MaterialDivider
@@ -20,7 +21,12 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/roboto_medium"
         android:gravity="center"
-        android:text="Понеделник, 2025-02-10" />
+        android:paddingLeft="12dp"
+        android:paddingTop="6dp"
+        android:paddingRight="12dp"
+        android:paddingBottom="6dp"
+        android:text="Понеделник, 2025-02-10"
+        android:textColor="@color/text" />
 
     <Space
         android:layout_width="20dp"

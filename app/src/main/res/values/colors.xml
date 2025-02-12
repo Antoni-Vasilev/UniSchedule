@@ -2,4 +2,10 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="now">#D6E6FB</color>
+    <color name="done">#E2FFD9</color>
+    <color name="upcoming">#EDEDED</color>
+    <color name="text">#000000</color>
+    <color name="layout_bg">#FFFFFF</color>
 </resources>

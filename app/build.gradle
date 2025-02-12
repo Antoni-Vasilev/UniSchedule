@@ -39,4 +39,5 @@ dependencies {
     androidTestImplementation libs.espresso.core
 
     implementation libs.jsoup
+    implementation libs.swiperefreshlayout
 }
