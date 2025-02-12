@@ -1,0 +1,6 @@
+<resources>
+
+    <style name="Base.Theme.UniSchedule" parent="Theme.Material3.Light.NoActionBar" />
+
+    <style name="Theme.UniSchedule" parent="Base.Theme.UniSchedule" />
+</resources>
