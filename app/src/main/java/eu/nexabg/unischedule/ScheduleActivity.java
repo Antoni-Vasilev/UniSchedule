@@ -1,6 +1,7 @@
 package eu.nexabg.unischedule;
 
 import android.os.Bundle;
+import android.widget.AutoCompleteTextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,11 +33,17 @@ public class ScheduleActivity extends AppCompatActivity {
 
     private RecyclerView scheduleList;
     private SwipeRefreshLayout swipeRefresh;
+    private AutoCompleteTextView weeksDropDown;
 
-    private List<Schedule> schedule = new ArrayList<>();
+    private final List<Schedule> schedule = new ArrayList<>();
     private ScheduleListAdapter scheduleAdapter;
+
+    public static List<String> items = new ArrayList<>();
+    public static int selectedItem = -1;
+
     private Boolean autoRefresh = false;
     private Long lastPageDownload = 0L;
+    private final int pageDownloadDelay = 600000; /* 10min */
     private Document pageHistory;
 
     @Override
@@ -53,13 +60,23 @@ public class ScheduleActivity extends AppCompatActivity {
         init();
         setupList();
         refresh();
+
+//        List<String> countries = Arrays.asList("USA", "Canada", "India", "Australia", "UK", "Germany", "France");
+//        LineListAdapter adapter = new LineListAdapter(this, countries);
+//        weeksDropDown.setAdapter(adapter);
     }
 
     private void init() {
         scheduleList = findViewById(R.id.scheduleList);
         swipeRefresh = findViewById(R.id.swipeRefresh);
+        weeksDropDown = findViewById(R.id.weeksDropDown);
 
         swipeRefresh.setOnRefreshListener(this::refresh);
+        weeksDropDown.setOnItemClickListener((adapterView, view, i, l) -> {
+            selectedItem = i;
+            lastPageDownload = 0L;
+            refresh();
+        });
     }
 
     private void refresh() {
@@ -67,6 +84,7 @@ public class ScheduleActivity extends AppCompatActivity {
 
         Document body = readPage();
 
+        // Loading schedule
         if (body != null) {
             Elements rows = body.select("tbody").get(1).select("tr");
 
@@ -113,8 +131,47 @@ public class ScheduleActivity extends AppCompatActivity {
         scheduleList.setAdapter(scheduleAdapter);
     }
 
+    private void setupOptions() {
+        AtomicReference<Document> document = new AtomicReference<>();
+        AtomicReference<Boolean> isDone = new AtomicReference<>(false);
+
+        new Thread(() -> {
+            try {
+                document.set(Jsoup.connect("https://nvna.eu/wp/").get());
+                pageHistory = document.get();
+                lastPageDownload = System.currentTimeMillis();
+            } catch (Exception e) {
+                System.err.println("Document error");
+            }
+            isDone.set(true);
+        }).start();
+
+        while (!isDone.get()) {
+        }
+
+        Document body = document.get();
+        if (body != null) {
+            items.clear();
+            Elements options = body.select("select[name=Week] option");
+
+            for (int i = 0; i < options.size(); i++) {
+                Element option = options.get(i);
+                items.add(option.text());
+
+                if (selectedItem == -1 && option.attr("selected").equals("selected")) {
+                    selectedItem = i;
+                }
+                if (i == selectedItem) weeksDropDown.setText(option.text());
+            }
+
+            LineListAdapter adapter = new LineListAdapter(this, items);
+            weeksDropDown.setAdapter(adapter);
+            lastPageDownload = 0L;
+        }
+    }
+
     private Document readPage() {
-        if (System.currentTimeMillis() - lastPageDownload < 600000 /* 10min */) {
+        if (System.currentTimeMillis() - lastPageDownload < pageDownloadDelay) {
             return pageHistory;
         }
         swipeRefresh.setRefreshing(true);
@@ -124,7 +181,7 @@ public class ScheduleActivity extends AppCompatActivity {
 
         new Thread(() -> {
             try {
-                document.set(Jsoup.connect("https://nvna.eu/wp/?group=140241&queryType=group&Week=7").get());
+                document.set(Jsoup.connect(String.format("https://nvna.eu/wp/?group=140241&queryType=group&Week=%s", selectedItem + 1)).get());
                 pageHistory = document.get();
                 lastPageDownload = System.currentTimeMillis();
             } catch (Exception e) {
@@ -141,6 +198,7 @@ public class ScheduleActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        setupOptions();
         refresh();
 
         autoRefresh = true;

@@ -1,6 +1,8 @@
 <resources>
 
-    <style name="Base.Theme.UniSchedule" parent="Theme.Material3.Light.NoActionBar" />
+    <style name="Base.Theme.UniSchedule" parent="Theme.Material3.Light.NoActionBar">
+        <item name="colorOnSecondary">@color/white</item>
+    </style>
 
     <style name="Theme.UniSchedule" parent="Base.Theme.UniSchedule" />
 </resources>
